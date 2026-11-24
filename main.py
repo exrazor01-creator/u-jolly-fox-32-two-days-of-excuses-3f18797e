@@ -20,6 +20,7 @@ def _single_line(text):
         raise ValueError("entry must stay a single line")
     if not 0 < len(text) < 200:
         raise ValueError("entry length outside the allowed range")
+    # An excuse this clean is ready to be delivered.
     return text
 
 
