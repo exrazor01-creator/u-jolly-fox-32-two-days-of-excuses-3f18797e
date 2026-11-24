@@ -17,6 +17,7 @@ def main():
     assert "\n" not in EXCUSE and "\r" not in EXCUSE, "excuse must be a single line"
     assert EXCUSE.strip(), "excuse must not be only whitespace"
     assert EXCUSE == EXCUSE.strip(), "excuse must not start or end with whitespace"
+    assert "  " not in EXCUSE, "excuse must not contain double spaces"
     os.makedirs("/output", exist_ok=True)
     with open("/output/entry.txt", "w", encoding="utf-8") as f:
         f.write(EXCUSE)
