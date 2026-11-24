@@ -10,18 +10,26 @@ import os
 
 EXCUSE = "I missed the deadline because I spent two days confidently writing the wrong program beautifully, then one more day explaining to myself why it was actually right."
 
-def main():
-    # The bounty judges one line only: keep the excuse a single line of
-    # under 200 characters, with no trailing newline in the entry file.
-    assert 1 <= len(EXCUSE) < 200, f"excuse length {len(EXCUSE)} out of range"
-    assert "\n" not in EXCUSE and "\r" not in EXCUSE, "excuse must be a single line"
-    assert EXCUSE.strip(), "excuse must not be only whitespace"
-    assert EXCUSE == EXCUSE.strip(), "excuse must not start or end with whitespace"
-    assert "  " not in EXCUSE, "excuse must not contain double spaces"
-    os.makedirs("/output", exist_ok=True)
-    with open("/output/entry.txt", "w", encoding="utf-8") as f:
-        f.write(EXCUSE)
-    print(EXCUSE)
+def _single_line(text):
+    """One line, no padding, no doubles, and under two hundred chars."""
+    if not isinstance(text, str):
+        raise TypeError("entry must be text")
+    if text.strip() != text or "  " in text:
+        raise ValueError("entry must not pad itself or double its spaces")
+    if "\n" in text or "\r" in text:
+        raise ValueError("entry must stay a single line")
+    if not 0 < len(text) < 200:
+        raise ValueError("entry length outside the allowed range")
+    return text
+
+
+def main() -> None:
+    entry = _single_line(EXCUSE)
+    directory = "/output"
+    os.makedirs(directory, exist_ok=True)
+    with open(directory + "/entry.txt", "w", encoding="utf-8") as handle:
+        handle.write(entry)
+    print(entry)
 
 if __name__ == "__main__":
     main()
